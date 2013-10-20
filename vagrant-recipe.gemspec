@@ -1,15 +1,15 @@
 $:.push File.expand_path("../lib", __FILE__)
-require 'vagrant-exec/version'
+require 'vagrant-recipe/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'vagrant-exec'
-  s.version     = VagrantPlugins::Exec::VERSION
+  s.name        = 'vagrant-recipe'
+  s.version     = VagrantPlugins::Recipe::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.author      = 'Alex Rodionov'
-  s.email       = 'p0deje@gmail.com'
-  s.homepage    = 'http://github.com/p0deje/vagrant-exec'
-  s.summary     = 'Execute commands in Vagrant synced folder'
-  s.description = 'Vagrant plugin to execute commands within the context of VM synced folder'
+  s.author      = 'Raul Simiciuc'
+  s.email       = 'byraul@gmail.com'
+  s.homepage    = 'http://github.com/rsimiciuc/vagrant-recipe'
+  s.summary     = 'Execute chef recipes'
+  s.description = 'Vagrant plugin to execute chef recipes'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

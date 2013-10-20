@@ -1,20 +1,20 @@
 module VagrantPlugins
-  module Exec
+  module Recipe
     class Plugin < Vagrant.plugin(2)
 
-      name 'Vagrant Exec'
-      description 'Plugin allows to execute commands within the context of synced folder.'
+      name 'Vagrant Recipe'
+      description 'Plugin allows to execute a chef recipe.'
 
-      config :exec do
+      config :run-recipe do
         require_relative 'config'
         Config
       end
 
-      command :exec do
+      command :run-recipe do
         require_relative 'command'
         Command
       end
 
     end # Plugin
-  end # Exec
+  end # Recipe
 end # VagrantPlugins

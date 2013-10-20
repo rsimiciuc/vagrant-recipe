@@ -1,5 +1,5 @@
 module VagrantPlugins
-  module Exec
+  module Recipe
     class Command < Vagrant.plugin(2, :command)
 
       def execute
@@ -8,16 +8,16 @@ module VagrantPlugins
 
         # Execute the actual SSH
         with_target_vms(nil, single_target: true) do |vm|
-          vm.config.exec.finalize! # TODO: do we have to call it explicitly?
+          vm.config.recipe.finalize! # TODO: do we have to call it explicitly?
 
-          plain   = "#{cmd} " << cmd_args.join(' ')
-          command = "cd #{vm.config.exec.folder} && "
+          plain   = "sudo chef-solo -c #{vm.config.recipe.chef} -j #{vm.config.recipe.json} --override-runlist \"recipe[#{cmd}]\""
+          command = ""
 
           command << add_env(vm.config.exec.env)
           command << add_bundler(vm.config.exec.bundler, plain)
           command << plain
 
-          @logger.info("Executing single command on remote machine: #{command}")
+          @logger.info("Executing recipe on remote machine: #{command}")
           env = vm.action(:ssh_run, ssh_run_command: command)
 
           status = env[:ssh_run_exit_status] || 0
@@ -29,7 +29,7 @@ module VagrantPlugins
 
       def parse_args
         opts = OptionParser.new do |o|
-          o.banner = 'Usage: vagrant exec [options] <command>'
+          o.banner = 'Usage: vagrant run-recipe <recipe-name>'
           o.separator ''
 
           o.on('-h', '--help', 'Print this help') do
@@ -68,5 +68,5 @@ module VagrantPlugins
       end
 
     end # Command
-  end # Exec
+  end # Recipe
 end # VagrantPlugins
