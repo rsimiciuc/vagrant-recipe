@@ -1,46 +1,49 @@
-vagrant-exec [![Gem Version](https://badge.fury.io/rb/vagrant-exec.png)](http://badge.fury.io/rb/vagrant-exec)
+vagrant-recipe [![Gem Version](https://badge.fury.io/rb/vagrant-exec.png)](http://badge.fury.io/rb/vagrant-exec)
 ===============
 
-Vagrant plugin to execute commands within the context of VM synced directory.
+Vagrant plugin to execute chef recipes.
 
 Description
 -----------
 
-You will probably use the plugin if you don't want to SSH into the box to execute commands simply because your machine environment is already configured (e.g. I use ZSH and TextMate bundles to run specs/features).
+Use this plugin to run your recipes at any time.
 
 Example
 -------
 
 ```shell
-➜ vagrant exec pwd
-/vagrant
+➜ vagrant run-recipe SystemSetup::default
 ```
 
 Installation
 ------------
 
 ```shell
-➜ vagrant plugin install vagrant-exec
+➜ vagrant plugin install vagrant-recipe
 ```
 
 Configuration
 -------------
 
-### Custom folder
+### Chef exec file and chef json config file
 
 The root directory can be configured using Vagrantfile.
 
 ```ruby
 Vagrant.configure('2') do |config|
   config.vm.box = 'precise32'
-  config.exec.folder = '/custom'
+  # set this value if your solo exec file is different from /tmp/vagrant-chef-1/solo.rb
+  config.recipe.chef = '/tmp/vagrant-chef-1/solo.rb'
+  
+  # set this value if your json confi file is different from /tmp/vagrant-chef-1/dna.json
+  config.recipe.json = '/tmp/vagrant-chef-1/dna.json'
 end
 ```
 
 ```shell
-➜ vagrant exec pwd
+➜ vagrant run-recipe SystemSetup
 # is the same as
-➜ vagrant ssh -c "cd /custom && bundle exec pwd"
+➜ vagrant ssh -c "sudo chef-solo -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json --override-runlist \"recipe[SystemSetup::default]\""
 ```
 
 ### Bundler
@@ -50,18 +53,14 @@ You can enable bundler to prepend each command with `bundle exec`. Note that it 
 ```ruby
 Vagrant.configure('2') do |config|
   config.vm.box = 'precise32'
-  config.exec.bundler = true
+  config.recipe.bundler = true
 end
 ```
 
 ```shell
-➜ vagrant exec pwd
+➜ vagrant recipe SystemSetup
 # is the same as
-➜ vagrant ssh -c "cd /vagrant && bundle exec pwd"
-
-➜ vagrant exec bundle install
-# is the same as
-➜ vagrant ssh -c "cd /vagrant && bundle install"
+➜ vagrant ssh -c "cd /vagrant && bundle exec sudo chef-solo -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json --override-runlist \"recipe[SystemSetup::default]\""
 ```
 
 ### Environment variables
@@ -71,48 +70,18 @@ You can add environment variables to be exported before.
 ```ruby
 Vagrant.configure('2') do |config|
   config.vm.box = 'precise32'
-  config.exec.env['RAILS_ENV'] = 'test'
-  config.exec.env['RAILS_ROOT'] = '/vagrant'
+  config.recipe.env['RAILS_ENV'] = 'test'
+  config.recipe.env['RAILS_ROOT'] = '/vagrant'
 end
 ```
 
 ```shell
-➜ vagrant exec pwd
+➜ vagrant exec SystemSetup
 # is the same as
-➜ vagrant ssh -c "cd /vagrant && export RAILS_ENV=test && export RAILS_ROOT=/vagrant && pwd"
+➜ vagrant ssh -c "export RAILS_ENV=test && export RAILS_ROOT=/vagrant && sudo chef-solo -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json --override-runlist \"recipe[SystemSetup::default]\""
 ```
-
-Acceptance tests
-----------------
-
-Before running features, you'll need to bootstrap box.
-
-```shell
-➜ bundle exec rake features:bootstrap
-```
-
-To run features, execute the following rake task.
-
-```shell
-➜ bundle exec rake features:run
-```
-
-After you're done, remove Vagrant box.
-
-```shell
-➜ bundle exec rake features:cleanup
-```
-
-Note on Patches/Pull Requests
------------------------------
-
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a future version unintentionally.
-* Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
 
 Copyright
 ---------
 
-Copyright (c) 2013-2013 Alex Rodionov. See LICENSE.md for details.
+Copyright (c) 2013-2013 Raul Simiciuc. See LICENSE.md for details.
