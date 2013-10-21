@@ -13,8 +13,8 @@ module VagrantPlugins
           plain   = "sudo chef-solo -c #{vm.config.recipe.chef} -j #{vm.config.recipe.json} --override-runlist \"recipe[#{cmd}]\""
           command = ""
 
-          command << add_env(vm.config.exec.env)
-          command << add_bundler(vm.config.exec.bundler, plain)
+          command << add_env(vm.config.recipe.env)
+          command << add_bundler(vm.config.recipe.bundler, plain)
           command << plain
 
           @logger.info("Executing recipe on remote machine: #{command}")
