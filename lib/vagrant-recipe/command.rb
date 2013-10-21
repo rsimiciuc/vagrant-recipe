@@ -14,8 +14,8 @@ module VagrantPlugins
           command = ""
 
           command << add_env(vm.config.recipe.env)
-          command << add_bundler(vm.config.recipe.bundler, plain)
-          command << plain
+          command << add_bundler(vm.config.recipe.bundler, plain.to_str)
+          command << plain.to_str
 
           @logger.info("Executing recipe on remote machine: #{command}")
           env = vm.action(:ssh_run, ssh_run_command: command)
