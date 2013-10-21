@@ -5,12 +5,12 @@ module VagrantPlugins
       name 'Vagrant Recipe'
       description 'Plugin allows to execute a chef recipe.'
 
-      config :run-recipe do
+      config "run-recipe" do
         require_relative 'config'
         Config
       end
 
-      command :run-recipe do
+      command "run-recipe" do
         require_relative 'command'
         Command
       end
