@@ -12,7 +12,7 @@ Example
 -------
 
 ```shell
-➜ vagrant run-recipe SystemSetup::default
+➜ vagrant recipe SystemSetup::default
 ```
 
 Installation
@@ -41,26 +41,9 @@ end
 ```
 
 ```shell
-➜ vagrant run-recipe SystemSetup
-# is the same as
-➜ vagrant ssh -c "sudo chef-solo -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json --override-runlist \"recipe[SystemSetup::default]\""
-```
-
-### Bundler
-
-You can enable bundler to prepend each command with `bundle exec`. Note that it won't be done for commands starting with `bundle` (e.g. `bundle install`).
-
-```ruby
-Vagrant.configure('2') do |config|
-  config.vm.box = 'precise32'
-  config.recipe.bundler = true
-end
-```
-
-```shell
 ➜ vagrant recipe SystemSetup
 # is the same as
-➜ vagrant ssh -c "cd /vagrant && bundle exec sudo chef-solo -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json --override-runlist \"recipe[SystemSetup::default]\""
+➜ vagrant ssh -c "sudo chef-solo -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json --override-runlist \"recipe[SystemSetup::default]\""
 ```
 
 ### Environment variables
@@ -76,7 +59,7 @@ end
 ```
 
 ```shell
-➜ vagrant exec SystemSetup
+➜ vagrant recipe SystemSetup
 # is the same as
 ➜ vagrant ssh -c "export RAILS_ENV=test && export RAILS_ROOT=/vagrant && sudo chef-solo -c /tmp/vagrant-chef-1/solo.rb -j /tmp/vagrant-chef-1/dna.json --override-runlist \"recipe[SystemSetup::default]\""
 ```
