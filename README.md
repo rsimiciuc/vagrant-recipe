@@ -1,4 +1,4 @@
-vagrant-recipe [![Gem Version](https://badge.fury.io/rb/vagrant-exec.png)](http://badge.fury.io/rb/vagrant-exec)
+vagrant-recipe [![Gem Version](https://badge.fury.io/rb/vagrant-recipe.png)](http://badge.fury.io/rb/vagrant-recipe)
 ===============
 
 Vagrant plugin to execute chef recipes.
